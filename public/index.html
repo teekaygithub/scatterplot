@@ -26,6 +26,8 @@
             const w = 800;
             const h = 400;
             const PADDING = 50;
+            
+            <!-- SETUP SCALES AND AXIS -->
             const xScale = d3.scaleLinear().domain([yearMin, yearMax]).range([PADDING,w]);
             const xAxis = d3.axisBottom(xScale).tickFormat(d=>d.toString());
             
@@ -46,10 +48,49 @@
                .attr("r",5)
                .attr("data-xvalue",(d)=>d.Year)
                .attr("data-yvalue",(d)=>d.Time)
+               .attr("data-name", (d)=>d.Name)
+               .attr("data-nat", (d)=>d.Nationality)
                .attr("class","dot")
-               .attr("fill","navy");
+               .attr("fill","navy")
+               .on("mouseover",mouseover)
+               .on("mouseout",mouseout);
                
+            const legend = svg.append("g").attr("id","legend");
+            const nondoping = legend.append("g").attr("id","label-nondoping").attr("transform","translate(0,150)");
+            nondoping.append("text").style("font-size","12px").attr("x","600px").attr("dy","15px").html("No doping allegations");
+            nondoping.append("rect").attr("height","20px").attr("width","20px").attr("x","800px").style("fill","orange");
+            const doping = legend.append("g").attr("id","label-doping").attr("transform","translate(0,150)");
+            doping.append("text").attr("x","600px").attr("y","40px").attr("dy","15px").html("Riders with doping allegations").style("font-size","12px");
+            doping.append("rect").attr("height","20px").attr("width","20px").attr("x","800px").attr("y","40px").style("fill","blue");
+            <!-- legend.append("text").style("font-size","12px").attr("x","0px").style("display","inline").html("wat"); -->
+            <!-- legend.append("rect").attr("height","20px").attr("width","20px").attr("x","60px").style("fill","orange"); -->
+            <!-- legend.append("text").style("font-size","12px").attr("y","30px").style("display","inline-block").html("wat"); -->
+            <!-- legend.append("rect").attr("height","20px").attr("width","20px").attr("x","20px").attr("y","30px").style("fill","blue"); -->
             
+            <!-- TOOLTIP -->
+            let div = d3.select("#container")
+                        .append("div")
+                        .attr("class","tooltip")
+                        .attr("id","tooltip")
+                        .style("width" ,"200px")
+                        .style("height", "50px")
+                        .style("display","none");
+                        
+            function mouseover() {
+                const current = d3.select(this);
+                let leftOffset = parseInt(current.attr("cx"))+PADDING;
+                let topOffset = parseInt(current.attr("cy"));
+                <!-- console.log("current position: ",current.attr('x'),current.attr('y')); //debug -->
+                div.style("display","inline")
+                   .style("left",leftOffset.toString()+"px")
+                   .style("top",topOffset.toString()+"px")
+                   .attr("data-year",current.attr("data-xvalue"))
+                   .html(current.attr("data-name")+"<br>Year: "+current.attr("data-xvalue")+" Time: "+current.attr("data-yvalue"));
+            }
+            
+            function mouseout() {
+                div.style("display", "none");
+            }
           })
     </script>
     <script src="https://cdn.freecodecamp.org/testable-projects-fcc/v1/bundle.js"></script>
