@@ -1,0 +1,30 @@
+body {
+    background-color: rgb(127,255,127);
+}
+
+#container {
+    border: 1px solid;
+    width: 1200px;
+    height: 1000px;
+    background-color: white;
+    margin: 50px auto;
+    text-align: center;
+    font-size: 40px;
+    font-family: arial;
+}
+
+.bar:hover {
+    fill: brown;
+    .tooltip .tooltiptext {
+        visibility: visible;
+    }
+}
+
+.tooltip {
+    position: absolute;
+    border: 1px solid;
+    background-color: black;
+    color: white;
+    font-size: 18px;
+    opacity: 0.6;
+}

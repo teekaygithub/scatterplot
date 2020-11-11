@@ -1,0 +1,24 @@
+{
+  "name": "scatterplot",
+  "version": "1.0.0",
+  "description": "Freecodecamp project: scatterplot",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/teekaygithub/scatterplot.git"
+  },
+  "author": "Tom Kato",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/teekaygithub/scatterplot/issues"
+  },
+  "homepage": "https://github.com/teekaygithub/scatterplot#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "nodemon": "^2.0.6"
+  }
+}

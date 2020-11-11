@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="./index.css" />
+    <script src="https://d3js.org/d3.v6.js"></script>
+    <title>Scatter Plot</title>
+</head>
+<body>
+    <div id="container">
+        <h3 id="title">Scatter Plot</h3>
+    </div>
+    <script>
+        let dataset=[]
+        d3.json("https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/master/cyclist-data.json")
+          .then(function(data) {
+            const yearArr = data.map(x=>x.Year);
+            const yearMin = d3.min(yearArr)-2;
+            const yearMax = d3.max(yearArr)+2;
+            const timeArr = data.map(x=>{let temp= x.Time.split(":");return parseInt(temp[0])*60+parseInt(temp[1])});
+            const timeMin = d3.min(timeArr);
+            const timeMax = d3.max(timeArr);
+            console.log(data);      // debug
+            console.log(yearMin, yearMax);
+            console.log(timeMin, timeMax); // debug
+            
+            const w = 800;
+            const h = 400;
+            const PADDING = 50;
+            const xScale = d3.scaleLinear().domain([yearMin, yearMax]).range([PADDING,w]);
+            const xAxis = d3.axisBottom(xScale).tickFormat(d=>d.toString());
+            
+            const yScale = d3.scaleLinear().domain([timeMax, timeMin]).range([h,PADDING]);
+            <!-- yScale.ticks(2); -->
+            const yAxis = d3.axisLeft(yScale).ticks(7).tickFormat((d)=>parseInt(d/60)+":"+parseInt(d%60));
+            
+            const svg = d3.select("#container").append("svg").attr("width", w+PADDING*2).attr("height", h+PADDING*2);
+            
+            svg.append("g").attr("transform","translate(0," + h +")").attr("id","x-axis").call(xAxis);
+            svg.append("g").attr("transform","translate("+PADDING+", 0)").attr("id","y-axis").call(yAxis);
+            svg.selectAll("circle")
+               .data(data)
+               .enter()
+               .append("circle")
+               .attr("cx",(d)=>xScale(d.Year))
+               .attr("cy",(d)=>{let temp = d.Time.split(":"); return yScale(parseInt(temp[0])*60 + parseInt(temp[1]))})
+               .attr("r",5)
+               .attr("data-xvalue",(d)=>d.Year)
+               .attr("data-yvalue",(d)=>d.Time)
+               .attr("class","dot")
+               .attr("fill","navy");
+               
+            
+          })
+    </script>
+    <script src="https://cdn.freecodecamp.org/testable-projects-fcc/v1/bundle.js"></script>
+</body>
+</html>
